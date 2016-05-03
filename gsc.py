@@ -40,7 +40,7 @@ def execute_request(service, property_uri, request):
         siteUrl=property_uri, body=request).execute()
     res_df = pd.DataFrame.from_dict(res['rows'])
     print(res_df)
-    return res
+    return res_df
 
 
 # exec
@@ -143,6 +143,13 @@ request = {
 }
 print('###  top10 queries in Japan')
 res = execute_request(service, property_uri, request)
+
+
+from bokeh.charts import Scatter, output_file, show
+# from bokeh.io import output_notebook
+output_file("scatter.html")
+scatter = Scatter(res, x='impressions', y='clicks', title='bokeh test', y_mapper_type='log', x_mapper_type='log')
+show(scatter)
 
 
 # Group by both country and device.
